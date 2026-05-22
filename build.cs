@@ -169,7 +169,7 @@ Task("Publish")
 		Information($"Upload packages from {packageOutputDir.FullPath}");
 
 		// Get the paths to the packages.
-		var packages = GetFiles(packageOutputDir.CombineWithFilePath("*.*nupkg").ToString());
+		var packages = GetFiles(packageOutputDir.CombineWithFilePath("*.nupkg").ToString());
 
 		if (packages.Count == 0)
 		{
@@ -183,7 +183,8 @@ Task("Publish")
 			DotNetNuGetPush(package, new DotNetNuGetPushSettings
 			{
 				Source = nugetPublishFeed,
-				ApiKey = nugetApiKey
+				ApiKey = nugetApiKey,
+				SkipDuplicate = true
 			});
 		}
 	});
