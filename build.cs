@@ -19,7 +19,6 @@ var sonarLogin = Argument("sonarLogin", EnvironmentVariable("sonarLogin"));
 var project = File("./src/codeessentials.Extensions.AI.OpenApi/codeessentials.Extensions.AI.OpenApi.csproj").Path.MakeAbsolute(Context.Environment);
 var outputDir = Directory("./buildArtifacts/").Path.MakeAbsolute(Context.Environment);
 var packageOutputDir = Directory("./buildArtifacts/Package").Path.MakeAbsolute(Context.Environment);
-var outputDirNuget = outputDir.Combine("NuGet");
 var outputDirTests = outputDir.Combine("Tests");
 var codeCoverageResultFilePath = MakeAbsolute(outputDirTests).Combine("**/").CombineWithFilePath("coverage.opencover.xml");
 var testResultsPath = MakeAbsolute(outputDirTests).CombineWithFilePath("*.trx");
@@ -167,10 +166,10 @@ Task("Publish")
 	.Description("Pushes the created NuGet packages to nuget.org")
 	.Does(() => {
 
-		Information($"Upload packages from {outputDirNuget.FullPath}");
+		Information($"Upload packages from {packageOutputDir.FullPath}");
 
 		// Get the paths to the packages.
-		var packages = GetFiles(outputDirNuget.CombineWithFilePath("*.*nupkg").ToString());
+		var packages = GetFiles(packageOutputDir.CombineWithFilePath("*.*nupkg").ToString());
 
 		if (packages.Count == 0)
 		{
