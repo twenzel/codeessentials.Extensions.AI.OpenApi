@@ -160,40 +160,17 @@ Task("SonarEnd")
 		});
 	});
 
-
-Task("Pack")
-	.IsDependentOn("Test")
-	.IsDependentOn("Version")
-	.Does(() => {
-
-		if (versionInfo is null)
-			throw new InvalidOperationException("GitVersion information is not available.");
-
-		var settings = new DotNetPackSettings
-		{
-			Configuration = configuration,
-			OutputDirectory = outputDirNuget,
-			NoBuild = true
-		};
-
-		settings.MSBuildSettings = new DotNetMSBuildSettings()
-		{
-			PackageVersion = versionInfo.SemVer
-		}.WithProperty("SourceLinkCreate", "true");
-
-		DotNetPack(project.FullPath, settings);
-	});
-
 Task("Publish")
 	.WithCriteria(isReleaseCreation)
-	.IsDependentOn("Pack")
+	.IsDependentOn("Test")
+	.IsDependentOn("Version")
 	.Description("Pushes the created NuGet packages to nuget.org")
 	.Does(() => {
 
 		Information($"Upload packages from {outputDirNuget.FullPath}");
 
 		// Get the paths to the packages.
-		var packages = GetFiles(outputDirNuget.CombineWithFilePath("*.nupkg").ToString());
+		var packages = GetFiles(outputDirNuget.CombineWithFilePath("*.*nupkg").ToString());
 
 		if (packages.Count == 0)
 		{
@@ -216,7 +193,6 @@ Task("Default")
 	.IsDependentOn("SonarBegin")
 	.IsDependentOn("Test")
 	.IsDependentOn("SonarEnd")
-	.IsDependentOn("Pack")
 	.IsDependentOn("Publish");
 
 RunTarget(target);

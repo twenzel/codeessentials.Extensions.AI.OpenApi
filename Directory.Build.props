@@ -9,8 +9,6 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
 		<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
-
-		<PackageOutputPath>$(MSBuildThisFileDirectory)/nupkgs</PackageOutputPath>
   </PropertyGroup>
 
 	<PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
