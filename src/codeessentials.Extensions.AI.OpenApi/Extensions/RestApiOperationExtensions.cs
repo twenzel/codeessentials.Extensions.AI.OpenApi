@@ -34,14 +34,11 @@ internal static partial class RestApiOperationExtensions
 		RestApiParameterFilter? parameterFilter = null)
 	{
 		var parameters = new List<RestApiParameter>(parameterFilter is null ?
-		operation.Parameters :
-			operation.Parameters.Select(p => parameterFilter(new(operation, p))).Where(p => p != null).Cast<RestApiParameter>().ToList());
+		operation.Parameters : operation.Parameters.Select(p => parameterFilter(new(operation, p))).Where(p => p != null).ToList());
 
 		// Add payload parameters
 		if (operation.Payload is not null)
-		{
 			parameters.AddRange(GetPayloadParameters(operation, addPayloadParamsFromMetadata, enablePayloadNamespacing, parameterFilter));
-		}
 
 		foreach (var parameter in parameters)
 		{

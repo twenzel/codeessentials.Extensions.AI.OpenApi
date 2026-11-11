@@ -365,7 +365,11 @@ public sealed class OpenApiDocumentParser(ILoggerFactory? loggerFactory = null)
 	/// <param name="content">The OpenAPI request body content.</param>
 	/// <returns>The first support ed media type.</returns>
 	/// <exception cref="KernelException"></exception>
+#if NET10_0
 	private static string? GetMediaType(IDictionary<string, OpenApiMediaType>? content)
+#else
+	private static string? GetMediaType(IDictionary<string, IOpenApiMediaType>? content)
+#endif
 	{
 		if (content == null)
 			return null;
