@@ -27,6 +27,7 @@ jobs:
         with:
           dotnet-version: |
             10.0.x
+            11.0.x
 
       - name: Run Cake script
         run: dotnet run build.cs -- --verbosity=Verbose --target=Default
